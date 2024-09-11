@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LE CieL Countdown</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #0a0a0a, #000);
+            animation: backgroundPulse 10s infinite alternate;
+            position: relative;
+        }
+
+        @keyframes backgroundPulse {
+            0% {
+                background: radial-gradient(circle at center, #0a0a0a, #000);
+            }
+            100% {
+                background: radial-gradient(circle at center, #000, #0a0a0a);
+            }
+        }
+
+        /* RGB Flash Effect */
+        .flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            animation: rgbFlash 3s infinite;
+        }
+
+        @keyframes rgbFlash {
+            0% {
+                background-color: rgba(255, 0, 0, 0.1); /* Red */
+            }
+            33% {
+                background-color: rgba(0, 255, 0, 0.1); /* Green */
+            }
+            66% {
+                background-color: rgba(0, 0, 255, 0.1); /* Blue */
+            }
+            100% {
+                background-color: rgba(255, 0, 0, 0.1); /* Red */
+            }
+        }
+
+        #countdown {
+            text-align: center;
+            padding: 50px;
+            background-color: rgba(26, 26, 26, 0.9);
+            border: 3px solid #444;
+            box-shadow: 0px 0px 20px #000;
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            width: 80vw;
+            height: 40vh;
+        }
+
+        #countdown:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 30px #ff6666;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            color: #ff6666;
+            text-shadow: 0 0 20px #ff6666;
+        }
+
+        .time {
+            font-size: 3rem;
+            margin: 15px 0;
+            color: #e0e0e0;
+            transition: color 0.3s, text-shadow 0.3s;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .time:hover {
+            color: #ff6666;
+            text-shadow: 0 0 20px #ff6666;
+        }
+
+        .label {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 10px #ff6666;
+            }
+            100% {
+                text-shadow: 0 0 20px #ff6666;
+            }
+        }
+
+        #countdown h1 {
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                opacity: 0.4;
+            }
+        }
+
+        .bg-text {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Sans-serif';
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: moveText 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes moveText {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.pexels.com/photo/dark-space-background-4705663/') repeat center center;
+            opacity: 0.1;
+            z-index: -1;
+            animation: flicker 3s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flash"></div> <!-- RGB Flash Layer -->
+
+    <div class="bg-text">Celebrating Cultures - Embrace Diversity - Traditions Unite - Cultural Harmony</div>
+
+    <div id="countdown">
+        <h1>LE CieL</h1>
+        <div class="time" id="days"></div>
+        <div class="label">Days</div>
+        <div class="time" id="hours"></div>
+        <div class="label">Hours</div>
+        <div class="time" id="minutes"></div>
+        <div class="label">Minutes</div>
+        <div class="time" id="seconds"></div>
+        <div class="label">Seconds</div>
+    </div>
+
+    <script>
+        function countdown() {
+            const targetDate = new Date('September 17, 2024 21:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+            document.getElementById('seconds').innerText = seconds;
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<h1 class="flash">The Time Has Come...</h1>';
+            }
+        }
+
+        setInterval(countdown, 1000);
+    </script>
+
+</body>
+</html>
